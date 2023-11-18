@@ -1,12 +1,14 @@
+import scene.Scene;
+
 public class RayTracer {
 
-    RayTracer(final String filePath) {
-        filepath = filePath;
+    RayTracer(final Scene scene) {
+        mScene = scene;
     }
 
-    String filepath;
+    final Scene mScene;
 
-    public trace() {
+    public void trace() {
         // main loop goes here.
     }
 }
