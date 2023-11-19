@@ -1,19 +1,25 @@
 package scene;
 
+import scene.primitives.Light;
+import scene.primitives.Resolution;
+import scene.primitives.Sphere;
+import scene.primitives.ViewPort;
+
 import java.awt.*;
 import java.util.Collection;
-import java.util.List;
 
 public class Scene {
 
     public Scene(
             final ViewPort viewPort,
+            final Resolution resolution,
             final Collection<Sphere> spheres,
             final Collection<Light> lights,
             final Color backgound,
             final Color ambient,
             final String output) {
         mViewPort = viewPort;
+        mResolution = resolution;
         mSpheres = spheres;
         mLights = lights;
         mBackground = backgound;
@@ -22,6 +28,7 @@ public class Scene {
     }
 
     private final ViewPort mViewPort;
+    private final Resolution mResolution;
     private final Collection<Sphere> mSpheres;
     private final Collection<Light> mLights;
     private final Color mBackground;

@@ -4,9 +4,11 @@ import scene.SceneBuilder;
 
 import java.util.StringTokenizer;
 
-public class NameDecoder implements IDecoder {
+public class RightPlaneDecoder extends AbstractDecoder{
+
     @Override
     public SceneBuilder decode(final StringTokenizer parts, final SceneBuilder sceneBuilder) {
-        return sceneBuilder.withOutputName(parts.nextToken());
+        final float right = parseFloat(parts);
+        return sceneBuilder.withRightPlane(right);
     }
 }

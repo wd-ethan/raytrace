@@ -2,7 +2,9 @@ package scene.decoders;
 
 import scene.SceneBuilder;
 
+import java.util.StringTokenizer;
+
 public interface IDecoder {
 
-    public void decode(final String[] parts, final SceneBuilder sceneBuilder);
+    SceneBuilder decode(final StringTokenizer parts, final SceneBuilder sceneBuilder);
 }

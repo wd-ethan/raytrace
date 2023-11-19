@@ -1,10 +1,19 @@
 package scene.decoders;
 
+import scene.primitives.Light;
 import scene.SceneBuilder;
+import scene.primitives.Vector;
 
-public class LightDecoder implements IDecoder {
+import java.util.StringTokenizer;
+
+public class LightDecoder extends AbstractDecoder {
+
     @Override
-    public void decode(String[] parts, SceneBuilder sceneBuilder) {
+    public SceneBuilder decode(final StringTokenizer parts, final SceneBuilder sceneBuilder) {
+        final String name = parts.nextToken();
+        final Vector position = parseVector(parts, 3);
+        final Vector intensity = parseVector(parts, 3);
 
+        return sceneBuilder.withLight(new Light(name, position, intensity));
     }
 }

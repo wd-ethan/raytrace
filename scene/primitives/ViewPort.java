@@ -1,17 +1,13 @@
-package scene;
-
-import scene.Resolution;
+package scene.primitives;
 
 public class ViewPort {
 
-    ViewPort(
-            final Resolution resolution,
+    public ViewPort(
             final float near,
             final float top,
             final float bottom,
             final float left,
             final float right){
-        mResolution = resolution;
         mNear = near;
         mTop = top;
         mBottom = bottom;
@@ -20,10 +16,9 @@ public class ViewPort {
     }
 
     ViewPort(){
-        this(new Resolution(), 1, 1, -1, -1, 1);
+        this(1, 1, -1, -1, 1);
     }
 
-    private final Resolution mResolution;
     private final float mNear;
     private final float mTop;
     private final float mBottom;

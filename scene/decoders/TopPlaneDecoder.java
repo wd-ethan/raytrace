@@ -4,9 +4,10 @@ import scene.SceneBuilder;
 
 import java.util.StringTokenizer;
 
-public class NameDecoder implements IDecoder {
+public class TopPlaneDecoder extends AbstractDecoder {
     @Override
     public SceneBuilder decode(final StringTokenizer parts, final SceneBuilder sceneBuilder) {
-        return sceneBuilder.withOutputName(parts.nextToken());
+        final float top = parseFloat(parts);
+        return sceneBuilder.withTopPlane(top);
     }
 }
