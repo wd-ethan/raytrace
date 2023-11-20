@@ -32,7 +32,7 @@ public class SceneFile {
 
     private final String mFilepath;
 
-    public Scene decode() throws FileNotFoundException {
+    public SceneBuilder decode() throws FileNotFoundException {
         SceneBuilder scene = new SceneBuilder();
 
         try {
@@ -48,6 +48,6 @@ public class SceneFile {
             throw new FileNotFoundException("Seems the file you passed is no good.");
         }
 
-        return scene.build();
+        return scene;
     }
 }

@@ -4,6 +4,7 @@ import scene.primitives.Light;
 import scene.primitives.Resolution;
 import scene.primitives.Sphere;
 import scene.primitives.ViewPort;
+import tracer.RayTracer;
 
 import java.awt.*;
 import java.util.Collection;
@@ -21,13 +22,16 @@ public class SceneBuilder {
     private float mTop = 1;
     private float mBottom = -1;
     private Resolution mResolution = new Resolution();
-    private Color mBackgound = new Color(255, 255, 255);
+    private Color mBackground = new Color(255, 255, 255);
     private Color mAmbient = new Color(127, 127, 127);
     private String mOutput = "test.ppm";
 
-    public Scene build() {
-        return new Scene(new ViewPort(mNear, mTop, mBottom, mLeft, mRight),
-                mResolution, mSpheres, mLights, mBackgound, mAmbient, mOutput);
+    public Scene buildScene() {
+        return new Scene(mSpheres, mLights, mBackground, mAmbient, mOutput);
+    }
+
+    public RayTracer buildRayTracer() {
+        return new RayTracer(mResolution, new ViewPort(mNear, mTop, mBottom, mLeft, mRight));
     }
 
     public SceneBuilder withNearPlane(final float near) {
@@ -79,7 +83,7 @@ public class SceneBuilder {
     }
 
     public SceneBuilder withBackground(final Color color) {
-        mBackgound = color;
+        mBackground = color;
 
         return this;
     }

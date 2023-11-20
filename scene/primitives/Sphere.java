@@ -27,4 +27,7 @@ public class Sphere {
     private final Vector mConstants;
     private final float mSpecular;
 
+    public boolean intersect(final Vector ray) {
+        return false;
+    }
 }
