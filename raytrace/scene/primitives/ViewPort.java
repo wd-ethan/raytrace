@@ -1,4 +1,4 @@
-package scene.primitives;
+package raytrace.scene.primitives;
 
 public class ViewPort {
 
@@ -19,9 +19,17 @@ public class ViewPort {
         this(1, 1, -1, -1, 1);
     }
 
-    private final float mNear;
-    private final float mTop;
-    private final float mBottom;
-    private final float mLeft;
-    private final float mRight;
+    final float mNear;
+    final float mTop;
+    final float mBottom;
+    final float mLeft;
+    final float mRight;
+
+    public float width() {
+        return Math.abs(mRight) + Math.abs(mLeft);
+    }
+
+    public float height() {
+        return Math.abs(mTop) + Math.abs(mBottom);
+    }
 }

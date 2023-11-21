@@ -1,6 +1,6 @@
-package scene;
+package raytrace.scene;
 
-import scene.decoders.*;
+import raytrace.scene.decoders.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

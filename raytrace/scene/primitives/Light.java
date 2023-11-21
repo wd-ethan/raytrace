@@ -1,6 +1,4 @@
-package scene.primitives;
-
-import scene.primitives.Vector;
+package raytrace.scene.primitives;
 
 public class Light {
 

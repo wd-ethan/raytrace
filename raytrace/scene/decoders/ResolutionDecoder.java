@@ -1,7 +1,7 @@
-package scene.decoders;
+package raytrace.scene.decoders;
 
-import scene.primitives.Resolution;
-import scene.SceneBuilder;
+import raytrace.scene.primitives.Resolution;
+import raytrace.scene.SceneBuilder;
 
 import java.util.StringTokenizer;
 

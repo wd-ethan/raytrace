@@ -1,6 +1,6 @@
-package scene.decoders;
+package raytrace.scene.decoders;
 
-import scene.SceneBuilder;
+import raytrace.scene.SceneBuilder;
 
 import java.util.StringTokenizer;
 

@@ -1,8 +1,8 @@
-package scene.decoders;
+package raytrace.scene.decoders;
 
-import scene.SceneBuilder;
-import scene.primitives.Sphere;
-import scene.primitives.Vector;
+import raytrace.scene.SceneBuilder;
+import raytrace.scene.primitives.Sphere;
+import raytrace.scene.primitives.Vector;
 
 import java.awt.*;
 import java.util.StringTokenizer;

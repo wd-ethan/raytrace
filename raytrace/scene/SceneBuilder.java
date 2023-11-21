@@ -1,10 +1,10 @@
-package scene;
+package raytrace.scene;
 
-import scene.primitives.Light;
-import scene.primitives.Resolution;
-import scene.primitives.Sphere;
-import scene.primitives.ViewPort;
-import tracer.RayTracer;
+import raytrace.scene.primitives.Light;
+import raytrace.scene.primitives.Resolution;
+import raytrace.scene.primitives.Sphere;
+import raytrace.scene.primitives.ViewPort;
+import raytrace.tracer.RayTracer;
 
 import java.awt.*;
 import java.util.Collection;

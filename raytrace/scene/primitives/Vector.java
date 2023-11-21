@@ -1,4 +1,4 @@
-package scene.primitives;
+package raytrace.scene.primitives;
 
 public class Vector {
 
@@ -21,4 +21,16 @@ public class Vector {
     private final float mY;
     private final float mZ;
     private final float mA;
+
+    public float x() {
+        return mX;
+    }
+
+    public float y() {
+        return mY;
+    }
+
+    public float z() {
+        return mZ;
+    }
 }
