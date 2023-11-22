@@ -1,29 +1,30 @@
 package raytrace.scene.primitives;
 
+import Jama.Matrix;
+
 public class Vector {
 
-    // TODO : remove Vector
-    public Vector(final float x, final float y, final float z, final float a) {
-        mX = x;
-        mY = y;
-        mZ = z;
-        mA = a;
+    public Vector(final Matrix vector) {
+        mX = vector.get(0, 0);
+        mY = vector.get(1, 0);
+        mZ = vector.get(2, 0);
+        mA = vector.get(3, 0);
     }
 
-    private final float mX;
-    private final float mY;
-    private final float mZ;
-    private final float mA;
+    private final double mX;
+    private final double mY;
+    private final double mZ;
+    private final double mA;
 
-    public float x() {
+    public double x() {
         return mX;
     }
 
-    public float y() {
+    public double y() {
         return mY;
     }
 
-    public float z() {
+    public double z() {
         return mZ;
     }
 }

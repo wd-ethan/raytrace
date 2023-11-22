@@ -8,18 +8,16 @@ import java.io.IOException;
 
 public class OutputFile {
 
-    public OutputFile(final String file, final Image image) {
-        mImage = image;
+    public OutputFile(final String file) {
         mFilename = file;
     }
 
-    private final Image mImage;
     private final String mFilename;
 
-    public void write() {
+    public void write(final Image image) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(mFilename))) {
-            writer.write(mImage.asPpm());
-        } catch (IOException e) {
+            writer.write(image.asPpm());
+        } catch (final IOException e) {
             e.printStackTrace();
         }
     }

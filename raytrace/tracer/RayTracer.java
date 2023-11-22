@@ -41,9 +41,9 @@ public class RayTracer {
 
         final Scene scene = builder.buildScene();
         final RayTracer tracer = builder.buildRayTracer();
+        final OutputFile output = builder.buildOutputFile();
 
         final Image image = tracer.trace(scene);
-        final OutputFile file = new OutputFile("./here.ppm", image);
-        file.write();
+        output.write(image);
     }
 }

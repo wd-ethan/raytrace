@@ -1,7 +1,7 @@
 package raytrace.scene.decoders;
 
 import raytrace.scene.SceneBuilder;
-import raytrace.scene.primitives.Sphere;
+import raytrace.scene.objects.Sphere;
 import raytrace.scene.primitives.Vector;
 
 import java.awt.*;

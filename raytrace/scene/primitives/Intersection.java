@@ -6,12 +6,12 @@ public class Intersection implements Comparable<Intersection> {
 
     public static Intersection NONE = new Intersection(-1, Color.black);
 
-    public Intersection(final float t, final Color color) {
+    public Intersection(final double t, final Color color) {
         mT = t;
         mColor = color;
     }
 
-    private final float mT;
+    private final double mT;
     private final Color mColor;
 
     public boolean isIntersection() {

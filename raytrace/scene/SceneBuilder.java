@@ -1,9 +1,11 @@
 package raytrace.scene;
 
+import raytrace.scene.objects.ISceneObject;
 import raytrace.scene.primitives.Light;
 import raytrace.scene.primitives.Resolution;
-import raytrace.scene.primitives.Sphere;
+import raytrace.scene.objects.Sphere;
 import raytrace.scene.primitives.ViewPort;
+import raytrace.tracer.OutputFile;
 import raytrace.tracer.RayTracer;
 
 import java.awt.*;
@@ -14,7 +16,7 @@ public class SceneBuilder {
 
     SceneBuilder() {}
 
-    private final Collection<Sphere> mSpheres = new HashSet<>();
+    private final Collection<ISceneObject> mObjects = new HashSet<>();
     private final Collection<Light> mLights = new HashSet<>();
     private float mNear = -1;
     private float mLeft = -1;
@@ -27,11 +29,15 @@ public class SceneBuilder {
     private String mOutput = "test.ppm";
 
     public Scene buildScene() {
-        return new Scene(mSpheres, mLights, mBackground, mAmbient, mOutput);
+        return new Scene(mObjects, mLights, mBackground, mAmbient, mOutput);
     }
 
     public RayTracer buildRayTracer() {
         return new RayTracer(mResolution, new ViewPort(mNear, mTop, mBottom, mLeft, mRight));
+    }
+
+    public OutputFile buildOutputFile() {
+        return new OutputFile(mOutput);
     }
 
     public SceneBuilder withNearPlane(final float near) {
@@ -71,7 +77,7 @@ public class SceneBuilder {
     }
 
     public SceneBuilder withSphere(final Sphere sphere) {
-        mSpheres.add(sphere);
+        mObjects.add(sphere);
 
         return this;
     }

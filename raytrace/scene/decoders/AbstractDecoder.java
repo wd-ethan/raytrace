@@ -1,5 +1,6 @@
 package raytrace.scene.decoders;
 
+import Jama.Matrix;
 import raytrace.scene.primitives.Vector;
 
 import java.awt.*;
@@ -9,10 +10,13 @@ public abstract class AbstractDecoder implements IDecoder {
 
     Vector parseVector(final StringTokenizer tokenizer, final int d) {
         return new Vector(
-                Float.parseFloat(tokenizer.nextToken()),
-                Float.parseFloat(tokenizer.nextToken()),
-                d > 2 ? Float.parseFloat(tokenizer.nextToken()) : 0,
-                d > 3 ? Float.parseFloat(tokenizer.nextToken()) : 0
+            new Matrix(new double[][]{
+                    {Double.parseDouble(tokenizer.nextToken())},
+                    {Double.parseDouble(tokenizer.nextToken())},
+                    {d > 2 ? Double.parseDouble(tokenizer.nextToken()) : 0},
+                    {d > 3 ? Double.parseDouble(tokenizer.nextToken()) : 0}
+            }      
+        )
         );
     }
 

@@ -25,24 +25,21 @@ public class Ray {
         return new Ray(eye, parametric);
     }
 
-    public float c() {
-        return (float) (mEye.get(0, 0) * mEye.get(0, 0)
+    public double pDot() {
+        return mEye.get(0, 0) * mEye.get(0, 0)
                 + mEye.get(1, 0) * mEye.get(1, 0)
-                + mEye.get(2, 0) * mEye.get(2, 0)) - 1;
+                + mEye.get(2, 0) * mEye.get(2, 0);
     }
 
-    public float a() {
-        final double mag =
-                mVector.get(0, 0) * mVector.get(0, 0)
+    public double vDot() {
+        return mVector.get(0, 0) * mVector.get(0, 0)
                 + mVector.get(1, 0) * mVector.get(1, 0)
                 + mVector.get(2, 0) * mVector.get(2, 0);
-
-        return (float) (mag);
     }
 
-    public float b() {
-        return (float) (mEye.get(0, 0) * mVector.get(0, 0)
-                        + mEye.get(1, 0) * mVector.get(1, 0)
-                        + mEye.get(2, 0) * mVector.get(2, 0));
+    public double pDotV() {
+        return mEye.get(0, 0) * mVector.get(0, 0)
+                + mEye.get(1, 0) * mVector.get(1, 0)
+                + mEye.get(2, 0) * mVector.get(2, 0);
     }
 }

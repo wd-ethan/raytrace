@@ -1,10 +1,13 @@
-package raytrace.scene.primitives;
+package raytrace.scene.objects;
 
 import java.awt.*;
 
 import Jama.*;
+import raytrace.scene.primitives.Intersection;
+import raytrace.scene.primitives.Ray;
+import raytrace.scene.primitives.Vector;
 
-public class Sphere {
+public class Sphere implements ISceneObject {
 
     public Sphere(
             final String name,
@@ -44,10 +47,10 @@ public class Sphere {
     }
 
     private Intersection intersection(final Ray ray) {
-        final float a = ray.a();
-        final float b = ray.b();
-        final float c = ray.c();
-        final float d = b * b - a * c;
+        final double a = ray.vDot();
+        final double b = ray.pDotV();
+        final double c = ray.pDot() - 1;
+        final double d = b * b - a * c;
 
         Intersection intersection = Intersection.NONE;
 

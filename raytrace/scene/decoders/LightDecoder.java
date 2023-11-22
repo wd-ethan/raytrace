@@ -1,5 +1,6 @@
 package raytrace.scene.decoders;
 
+import Jama.Matrix;
 import raytrace.scene.primitives.Light;
 import raytrace.scene.SceneBuilder;
 import raytrace.scene.primitives.Vector;
