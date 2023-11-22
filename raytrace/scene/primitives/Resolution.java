@@ -28,8 +28,8 @@ public class Resolution implements Iterable<Pixel> {
     public Iterator<Pixel> iterator() {
         return new Iterator<>() {
 
-            private int curCol = 0;
-            private int curRow = 0;
+            private int curCol = -1;
+            private int curRow = -1;
 
             @Override
             public boolean hasNext() {
@@ -38,7 +38,7 @@ public class Resolution implements Iterable<Pixel> {
 
             @Override
             public Pixel next() {
-                final int nextCol = curCol < mColumns ? curCol + 1 : 0;
+                final int nextCol = curCol < mColumns - 1 ? curCol + 1 : 0;
                 final int nextRow = nextCol == 0 ? curRow + 1 : curRow;
 
                 final Pixel nextPixel = new Pixel(mColumns, mRows, nextCol, nextRow);

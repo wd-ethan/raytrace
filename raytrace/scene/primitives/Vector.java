@@ -2,19 +2,12 @@ package raytrace.scene.primitives;
 
 public class Vector {
 
+    // TODO : remove Vector
     public Vector(final float x, final float y, final float z, final float a) {
         mX = x;
         mY = y;
         mZ = z;
         mA = a;
-    }
-
-    public Vector(final float x, final float y, final float z) {
-        this(x, y, z, 0);
-    }
-
-    public Vector(final float x, final float y) {
-        this(x, y, 0);
     }
 
     private final float mX;

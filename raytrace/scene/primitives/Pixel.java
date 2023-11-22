@@ -30,20 +30,23 @@ public class Pixel {
 
         rgb = mColor.getRGBComponents(rgb);
 
-        return stb.append((int) (rgb[0]*255)).append(" ").append((int) (rgb[1]*255)).append(" ").append((int) (rgb[2]*255)).toString();
+        return stb.append(
+                (int) (rgb[0]*255)).append(" ").append(
+                        (int) (rgb[1]*255)).append(" ").append(
+                                (int) (rgb[2]*255)).toString();
     }
 
     public Ray intersect(final Matrix eye, final ViewPort viewPort) {
-        final Matrix worldCoords = asCameraCoordinate(viewPort);
+        final Matrix cameraCoordinates = inCameraCoordinates(viewPort);
 
-        return new Ray(eye, worldCoords);
+        return new Ray(eye, cameraCoordinates);
     }
 
-    private Matrix asCameraCoordinate(final ViewPort view) {
-        final float x = view.mLeft + view.mRight * 2 * mCol / mCols;
-        final float y = view.mBottom + view.mTop * 2 * mRow / mRows;
+    private Matrix inCameraCoordinates(final ViewPort view) {
+        final float x = view.width() * (2 * mCol / mCols - 1);
+        final float y = view.height() * (2 * mRow / mRows - 1);
         final float z = -view.mNear;
 
-        return new Matrix(new double[][] {{x}, {-y}, {z}, {0}});
+        return new Matrix(new double[][] {{x}, {y}, {z}, {0}});
     }
 }

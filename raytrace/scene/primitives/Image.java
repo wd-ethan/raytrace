@@ -1,7 +1,6 @@
 package raytrace.scene.primitives;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Stack;
 
 public class Image {
 
@@ -9,7 +8,8 @@ public class Image {
         mResolution = resolution;
     }
 
-    private final Queue<Pixel> mPixels = new LinkedList<>();
+    // TODO : flip pixel orders
+    private final Stack<Pixel> mPixels = new Stack<>();
     private final Resolution mResolution;
 
     public void write(final Pixel pixel) {
@@ -24,7 +24,7 @@ public class Image {
         builder.append("255").append("\n");
 
         while (!mPixels.isEmpty()) {
-            final Pixel next = mPixels.remove();
+            final Pixel next = mPixels.pop();
 
             builder.append(next.asRgb()).append(" ");
             if (next.mCol == mResolution.width() - 1) {

@@ -4,6 +4,8 @@ import java.awt.*;
 
 public class Intersection implements Comparable<Intersection> {
 
+    public static Intersection NONE = new Intersection(-1, Color.black);
+
     public Intersection(final float t, final Color color) {
         mT = t;
         mColor = color;
@@ -13,7 +15,7 @@ public class Intersection implements Comparable<Intersection> {
     private final Color mColor;
 
     public boolean isIntersection() {
-        return mT > 0.0001;
+        return mT > 1.0001;
     }
 
     public Color color() {

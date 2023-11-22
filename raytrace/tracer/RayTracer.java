@@ -35,10 +35,6 @@ public class RayTracer {
         return image;
     }
 
-    public void write(final OutputFile file) {
-
-    }
-
     public static void main(String[] args) throws FileNotFoundException {
         final SceneFile sceneFile = new SceneFile(args[0]);
         final SceneBuilder builder = sceneFile.decode();

@@ -34,7 +34,9 @@ public class Scene {
 
         for (final Sphere sphere: mSpheres) {
             Intersection test = sphere.intersect(ray);
-            intersection = test.isIntersection() && test.compareTo(intersection) > 0 ? test : intersection;
+            intersection = test.isIntersection() && test.compareTo(intersection) > 0
+                    ? test
+                    : intersection;
         }
 
         return intersection.color();

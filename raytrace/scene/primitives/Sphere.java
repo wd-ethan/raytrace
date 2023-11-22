@@ -1,6 +1,7 @@
 package raytrace.scene.primitives;
 
 import java.awt.*;
+
 import Jama.*;
 
 public class Sphere {
@@ -28,43 +29,39 @@ public class Sphere {
     private final float mSpecular;
 
     public Intersection intersect(final Ray ray) {
-        final double[][] translater = {
-                {1, 0, 0, mPosition.x()},
-                {0, 1, 0, mPosition.y()},
-                {0, 0, 1, mPosition.z()},
-                {0, 0, 0, 1}
-        };
-        final double[][] scaler = {
-                {mScale.x(), 0, 0, 0},
-                {0, mScale.y(), 0, 0},
-                {0, 0, mScale.z(), 0},
+        final double[][] modelView = {
+                {mScale.x(), 0, 0, mPosition.x()},
+                {0, mScale.y(), 0, mPosition.y()},
+                {0, 0, mScale.z(), mPosition.z()},
                 {0, 0, 0, 1}
         };
 
-        final Matrix modelMatrix = new Matrix(translater).times(new Matrix(scaler));
+        final Matrix modelMatrix = new Matrix(modelView);
         final Matrix inverse = modelMatrix.inverse();
-
         final Ray inverseRay = ray.transform(inverse);
 
-        // solve for t
-        final float t = quadratic(inverseRay.a(), inverseRay.b(), inverseRay.c());
-
-        return new Intersection(t, mColor);
+        return intersection(inverseRay);
     }
 
-    private float quadratic(final float a, final float b, final float c) {
-        final float soln = b * b - a * c;
-        float t1;
-        float t2;
+    private Intersection intersection(final Ray ray) {
+        final float a = ray.a();
+        final float b = ray.b();
+        final float c = ray.c();
+        final float d = b * b - a * c;
 
-        if (soln >= 0) {
-            t1 = (float) ((-b  + Math.sqrt(soln)) / a);
-            t2 = (float) ((-b  - Math.sqrt(soln)) / a);
+        Intersection intersection = Intersection.NONE;
+
+        if (d == 0) {
+            intersection = new Intersection(-b / (2 * a), mColor);
         }
-        else {
-            return -1;
+        else if (d > 0){
+            final float t1 = (float) (-b + Math.sqrt(d) / a);
+            final float t2 = (float) (-b - Math.sqrt(d) / a);
+            final float t = t2 < t1 && t2 > 1.0001 ? t2 : t1;
+
+            intersection = new Intersection(t, mColor);
         }
 
-        return t1;
+        return intersection;
     }
 }
