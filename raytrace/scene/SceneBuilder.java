@@ -4,6 +4,7 @@ import raytrace.scene.objects.ISceneObject;
 import raytrace.scene.primitives.Light;
 import raytrace.scene.primitives.Resolution;
 import raytrace.scene.objects.Sphere;
+import raytrace.scene.primitives.Vector;
 import raytrace.scene.primitives.ViewPort;
 import raytrace.tracer.OutputFile;
 import raytrace.tracer.RayTracer;
@@ -25,11 +26,11 @@ public class SceneBuilder {
     private float mBottom = -1;
     private Resolution mResolution = new Resolution();
     private Color mBackground = new Color(255, 255, 255);
-    private Color mAmbient = new Color(127, 127, 127);
+    private Vector mAmbient = new Vector(0, 0, 0);
     private String mOutput = "test.ppm";
 
     public Scene buildScene() {
-        return new Scene(mObjects, mLights, mBackground, mAmbient, mOutput);
+        return new Scene(mObjects, mLights, mBackground, mAmbient);
     }
 
     public RayTracer buildRayTracer() {
@@ -94,7 +95,7 @@ public class SceneBuilder {
         return this;
     }
 
-    public SceneBuilder withAmbient(final Color color) {
+    public SceneBuilder withAmbient(final Vector color) {
         mAmbient = color;
 
         return this;

@@ -2,13 +2,38 @@ package raytrace.scene.primitives;
 
 import Jama.Matrix;
 
+import java.awt.*;
+
 public class Vector {
+
+    public Vector(final double x, final double y, final double z) {
+        mX = x;
+        mY = y;
+        mZ = z;
+        mA = 0;
+    }
 
     public Vector(final Matrix vector) {
         mX = vector.get(0, 0);
         mY = vector.get(1, 0);
         mZ = vector.get(2, 0);
         mA = vector.get(3, 0);
+    }
+
+    public Vector(final Color color) {
+        mX = color.getRed();
+        mY = color.getGreen();
+        mZ = color.getBlue();
+        mA = 0;
+    }
+
+    public Vector() {
+        this(new Matrix(new double[][] {
+                {0},
+                {0},
+                {0},
+                {0}
+        }));
     }
 
     private final double mX;
@@ -26,5 +51,33 @@ public class Vector {
 
     public double z() {
         return mZ;
+    }
+
+    public Vector add(final Vector vector) {
+        return new Vector(x() + vector.x(), y() + vector.y(), z() + vector.z());
+    }
+
+    public Vector times(final Vector vector) {
+        return new Vector(x() * vector.x(), y() * vector.y(), z() * vector.z());
+    }
+
+    public Vector times(final double k) {
+        return new Vector(k * x(), k * y(), k * z());
+    }
+
+    public Color asColor() {
+        return new Color(
+                x() > 255 ? 255 : (int) x(),
+                y() > 255 ? 255 : (int) y(),
+                z() > 255 ? 255 : (int) z());
+    }
+
+    public Matrix asMatrix() {
+        return new Matrix(new double[][] {
+                {mX},
+                {mY},
+                {mZ},
+                {mA}
+        });
     }
 }

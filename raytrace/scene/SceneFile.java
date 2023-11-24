@@ -22,7 +22,7 @@ public class SceneFile {
             Map.entry("RES", new ResolutionDecoder()),
             Map.entry("LIGHT", new LightDecoder()),
             Map.entry("BACK", new BackgroundDecoder()),
-            Map.entry("AMBIENT", new BackgroundDecoder()),
+            Map.entry("AMBIENT", new AmbientDecoder()),
             Map.entry("OUTPUT", new NameDecoder())
     );
 

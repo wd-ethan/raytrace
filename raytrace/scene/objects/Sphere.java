@@ -31,6 +31,10 @@ public class Sphere implements ISceneObject {
     private final Vector mConstants;
     private final float mSpecular;
 
+    public Matrix normal(final Matrix point) {
+        return point.minus(mPosition.asMatrix());
+    }
+
     public Intersection intersect(final Ray ray) {
         final double[][] modelView = {
                 {mScale.x(), 0, 0, mPosition.x()},
@@ -41,30 +45,33 @@ public class Sphere implements ISceneObject {
 
         final Matrix modelMatrix = new Matrix(modelView);
         final Matrix inverse = modelMatrix.inverse();
-        final Ray inverseRay = ray.transform(inverse);
+        final Ray rayInSphereCoords = ray.transform(inverse);
 
-        return intersection(inverseRay);
+        final double t = solve(rayInSphereCoords);
+
+        return Intersection.isIntersection(t)
+                ? new Intersection(ray, t, mColor, mConstants, normal(ray.at(t)))
+                : Intersection.NONE;
     }
 
-    private Intersection intersection(final Ray ray) {
+    private double solve(final Ray ray) {
         final double a = ray.vDot();
         final double b = ray.pDotV();
         final double c = ray.pDot() - 1;
-        final double d = b * b - a * c;
+        final double d = Math.pow(b, 2) - a * c;
 
-        Intersection intersection = Intersection.NONE;
+        double t = -1;
 
         if (d == 0) {
-            intersection = new Intersection(-b / (2 * a), mColor);
+            t = -b / (2 * a);
         }
         else if (d > 0){
-            final float t1 = (float) (-b + Math.sqrt(d) / a);
-            final float t2 = (float) (-b - Math.sqrt(d) / a);
-            final float t = t2 < t1 && t2 > 1.0001 ? t2 : t1;
+            final double t1 =  -b / a + Math.sqrt(d) / a;
+            final double t2 =  -b / a - Math.sqrt(d) / a;
 
-            intersection = new Intersection(t, mColor);
+            t = t2 < t1 && t2 > Intersection.MINIMUM_T ? t2 : t1;
         }
 
-        return intersection;
+        return t;
     }
 }

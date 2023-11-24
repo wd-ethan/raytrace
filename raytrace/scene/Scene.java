@@ -1,10 +1,13 @@
 package raytrace.scene;
 
+import Jama.Matrix;
 import raytrace.scene.objects.ISceneObject;
 import raytrace.scene.primitives.Intersection;
 import raytrace.scene.primitives.Light;
 import raytrace.scene.primitives.Ray;
+import raytrace.scene.primitives.Vector;
 
+import javax.management.MBeanAttributeInfo;
 import java.awt.*;
 import java.util.Collection;
 
@@ -14,23 +17,48 @@ public class Scene {
             final Collection<ISceneObject> objects,
             final Collection<Light> lights,
             final Color background,
-            final Color ambient,
-            final String output) {
+            final Vector ambient) {
         mObjects = objects;
         mLights = lights;
         mBackground = background;
         mAmbient = ambient;
-        mOutput = output;
     }
 
     private final Collection<ISceneObject> mObjects;
     private final Collection<Light> mLights;
     private final Color mBackground;
-    private final Color mAmbient;
-    private final String mOutput;
+    private final Vector mAmbient;
 
     public Color trace(final Ray ray) {
-        Intersection intersection = new Intersection(-1, new Color(0, 0, 0));
+        Vector color = new Vector(0, 0, 0);
+
+        final Intersection nearest = nearestIntersection(ray);
+
+        if (nearest.isIntersection()) {
+            color = color.add(nearest.ambientColour().times(mAmbient));
+
+            final Matrix point = nearest.point();
+
+            for (final Light light : mLights) {
+                final Ray shadowRay = light.shadowRay(point);
+                final Intersection local = nearestIntersection(shadowRay);
+
+                if (!local.isIntersection()) {
+                    final double dot = Math.abs(shadowRay.angle(nearest.normal()));
+
+                    color = color.add(nearest.diffuseColour().times(light.intensity()).times(dot));
+                }
+            }
+        }
+        else {
+            color = new Vector(mBackground);
+        }
+
+        return color.asColor();
+    }
+
+    public Intersection nearestIntersection(final Ray ray) {
+        Intersection intersection = Intersection.NONE;
 
         for (final ISceneObject object: mObjects) {
             Intersection test = object.intersect(ray);
@@ -39,6 +67,6 @@ public class Scene {
                     : intersection;
         }
 
-        return intersection.color();
+        return intersection;
     }
 }
