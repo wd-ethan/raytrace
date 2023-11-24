@@ -1,58 +1,45 @@
 package raytrace.scene.primitives;
 
 import Jama.Matrix;
-
-import java.awt.*;
+import raytrace.scene.objects.ISceneObject;
 
 public class Intersection implements Comparable<Intersection> {
 
     public static double MINIMUM_T = 0.00001;
-    public static Intersection NONE = new Intersection(Ray.DEFAULT, -1, Color.black, new Vector(), new Matrix(new double[][] {{}}));
+    public static Intersection NONE = new Intersection(null, null , -1);
 
     public static boolean isIntersection(final double t) {
-        return t > 0.00001;
+        return t > MINIMUM_T;
     }
 
-    public Intersection(final Ray ray, final double t, final Color color, final Vector constants, final Matrix normal) {
-        mRay = ray;
+    public Intersection(final ISceneObject object, final Matrix point, final double t) {
+        mObject = object;
+        mPoint = point;
         mT = t;
-        mColor = color;
-        mConstants = constants;
-        mNormal = normal;
     }
 
-    private final Ray mRay;
+    private final ISceneObject mObject;
+    private final Matrix mPoint;
     private final double mT;
-    private final Color mColor;
-    private final Vector mConstants;
-    private final Matrix mNormal;
 
     public boolean isIntersection() {
         return mT > MINIMUM_T;
     }
 
-    private Vector color() {
-        return new Vector(mColor.getRed(), mColor.getGreen(), mColor.getBlue());
-    }
-
     public Vector ambientColour() {
-        final double ka = mConstants.x();
-
-        return color().times(ka);
+        return mObject.ambientColour();
     }
 
-    public Vector diffuseColour() {
-        final double kd = mConstants.y();
+    public Vector diffuseColour(final Ray light, final Vector intensity) {
+        return mObject.diffuseColour(light, mPoint, intensity);
+    }
 
-        return color().times(kd);
+    private Vector specularColour(final Ray viewing, final Ray shadow, final Matrix point, final double intensity) {
+        return mObject.specularColour(viewing, shadow, point, intensity);
     }
 
     public Matrix point() {
-        return mRay.at(mT);
-    }
-
-    public Matrix normal() {
-        return mNormal;
+        return mPoint;
     }
 
     @Override

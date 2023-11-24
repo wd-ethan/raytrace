@@ -67,9 +67,9 @@ public class Vector {
 
     public Color asColor() {
         return new Color(
-                x() > 255 ? 255 : (int) x(),
-                y() > 255 ? 255 : (int) y(),
-                z() > 255 ? 255 : (int) z());
+                clamp(x()),
+                clamp(y()),
+                clamp(z()));
     }
 
     public Matrix asMatrix() {
@@ -79,5 +79,9 @@ public class Vector {
                 {mZ},
                 {mA}
         });
+    }
+
+    private int clamp(final double i) {
+        return i > 255 ? 255 : i < 0 ? 0 : (int) i;
     }
 }

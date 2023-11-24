@@ -7,29 +7,23 @@ import raytrace.scene.primitives.Intersection;
 import raytrace.scene.primitives.Ray;
 import raytrace.scene.primitives.Vector;
 
-public class Sphere implements ISceneObject {
+public class Sphere extends AbstractSceneObject {
 
     public Sphere(
             final String name,
             final Vector position,
             final Vector scale,
             final Color color,
-            final Vector constants,
+            final Vector coefficients,
             final float specular){
-        mName = name;
+        super(name, color, coefficients, specular);
+
         mPosition = position;
         mScale = scale;
-        mColor = color;
-        mConstants = constants;
-        mSpecular = specular;
     }
 
-    private final String mName;
     private final Vector mPosition;
     private final Vector mScale;
-    private final Color mColor;
-    private final Vector mConstants;
-    private final float mSpecular;
 
     public Matrix normal(final Matrix point) {
         return point.minus(mPosition.asMatrix());
@@ -50,7 +44,7 @@ public class Sphere implements ISceneObject {
         final double t = solve(rayInSphereCoords);
 
         return Intersection.isIntersection(t)
-                ? new Intersection(ray, t, mColor, mConstants, normal(ray.at(t)))
+                ? new Intersection(this, ray.at(t), t)
                 : Intersection.NONE;
     }
 

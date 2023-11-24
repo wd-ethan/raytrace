@@ -5,8 +5,6 @@ import raytrace.scene.util.MyUtils;
 
 public class Ray {
 
-    public static Ray DEFAULT = new Ray(new Matrix(new double[][] {{0}}), new Matrix(new double[][] {{0}}));
-
     public Ray(final Matrix eye, final Matrix vector, final int depth) {
         mPoint = eye;
         mVector = vector;
@@ -32,29 +30,23 @@ public class Ray {
         return mPoint.plus(mVector.times(t));
     }
 
-    public double angle(final Matrix vector) {
-        final double dot = MyUtils.dot(vector, mVector);
-        final double a = MyUtils.mag(vector);
-        final double b = MyUtils.mag(mVector);
+    public Matrix plus(final Ray other) {
+        return mVector.plus(other.mVector);
+    }
 
-        return dot / (a * b);
+    public Matrix asVector() {
+        return mVector;
     }
 
     public double pDot() {
-        return mPoint.get(0, 0) * mPoint.get(0, 0)
-                + mPoint.get(1, 0) * mPoint.get(1, 0)
-                + mPoint.get(2, 0) * mPoint.get(2, 0);
+        return MyUtils.dot(mPoint, mPoint);
     }
 
     public double vDot() {
-        return mVector.get(0, 0) * mVector.get(0, 0)
-                + mVector.get(1, 0) * mVector.get(1, 0)
-                + mVector.get(2, 0) * mVector.get(2, 0);
+        return MyUtils.dot(mVector, mVector);
     }
 
     public double pDotV() {
-        return mPoint.get(0, 0) * mVector.get(0, 0)
-                + mPoint.get(1, 0) * mVector.get(1, 0)
-                + mPoint.get(2, 0) * mVector.get(2, 0);
+        return MyUtils.dot(mVector, mPoint);
     }
 }

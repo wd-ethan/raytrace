@@ -7,7 +7,6 @@ import raytrace.scene.primitives.Light;
 import raytrace.scene.primitives.Ray;
 import raytrace.scene.primitives.Vector;
 
-import javax.management.MBeanAttributeInfo;
 import java.awt.*;
 import java.util.Collection;
 
@@ -44,9 +43,7 @@ public class Scene {
                 final Intersection local = nearestIntersection(shadowRay);
 
                 if (!local.isIntersection()) {
-                    final double dot = Math.abs(shadowRay.angle(nearest.normal()));
-
-                    color = color.add(nearest.diffuseColour().times(light.intensity()).times(dot));
+                    color = color.add(nearest.diffuseColour(shadowRay, light.intensity()));
                 }
             }
         }
