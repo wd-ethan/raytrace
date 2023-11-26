@@ -6,6 +6,7 @@ import Jama.*;
 import raytrace.scene.primitives.Intersection;
 import raytrace.scene.primitives.Ray;
 import raytrace.scene.primitives.Vector;
+import raytrace.scene.util.MyUtils;
 
 public class Sphere extends AbstractSceneObject {
 
@@ -16,7 +17,7 @@ public class Sphere extends AbstractSceneObject {
             final Color color,
             final Vector coefficients,
             final float specular){
-        super(name, color, coefficients, specular);
+        super(name, color, position, coefficients, specular);
 
         mPosition = position;
         mScale = scale;
@@ -24,9 +25,10 @@ public class Sphere extends AbstractSceneObject {
 
     private final Vector mPosition;
     private final Vector mScale;
+    private Matrix mNormal;
 
     public Matrix normal(final Matrix point) {
-        return point.minus(mPosition.asMatrix());
+        return mNormal;
     }
 
     public Intersection intersect(final Ray ray) {
@@ -39,9 +41,16 @@ public class Sphere extends AbstractSceneObject {
 
         final Matrix modelMatrix = new Matrix(modelView);
         final Matrix inverse = modelMatrix.inverse();
+        final Matrix inverseTranspose = modelMatrix.inverse().transpose();
         final Ray rayInSphereCoords = ray.transform(inverse);
 
         final double t = solve(rayInSphereCoords);
+
+        if (Intersection.isIntersection(t)) {
+            final Matrix normal = rayInSphereCoords.at(t).minus(new Matrix(new double[][] {{0}, {0}, {0}, {1}}));
+            final Matrix worldNormal = inverseTranspose.times(normal);
+            mNormal = MyUtils.normalize(worldNormal);
+        }
 
         return Intersection.isIntersection(t)
                 ? new Intersection(this, ray.at(t), t)
@@ -57,13 +66,13 @@ public class Sphere extends AbstractSceneObject {
         double t = -1;
 
         if (d == 0) {
-            t = -b / (2 * a);
+            t = -b / a;
         }
         else if (d > 0){
-            final double t1 =  -b / a + Math.sqrt(d) / a;
-            final double t2 =  -b / a - Math.sqrt(d) / a;
+            final double t1 =  -b/a + Math.sqrt(d) / a;
+            final double t2 =  -b/a - Math.sqrt(d) / a;
 
-            t = t2 < t1 && t2 > Intersection.MINIMUM_T ? t2 : t1;
+            return Math.min(t1, t2);
         }
 
         return t;

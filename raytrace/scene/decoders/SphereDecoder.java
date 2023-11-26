@@ -12,7 +12,8 @@ public class SphereDecoder extends AbstractDecoder {
     @Override
     public SceneBuilder decode(final StringTokenizer parts, final SceneBuilder sceneBuilder) {
         final String name = parts.nextToken();
-        final Vector position = parseVector(parts, 3);
+        Vector position = parseVector(parts, 3);
+        position = new Vector(position.x(), position.y(), position.z(), 1);
         final Vector scale = parseVector(parts, 3);
         final Color color = parseColor(parts);
         final Vector constants = parseVector(parts, 4);

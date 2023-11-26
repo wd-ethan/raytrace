@@ -1,6 +1,7 @@
 package raytrace.scene.primitives;
 
 import Jama.Matrix;
+import raytrace.scene.util.MyUtils;
 
 public class Light {
 
@@ -22,7 +23,7 @@ public class Light {
                 {1}
         });
 
-        final Matrix vector = position.minus(point);
+        final Matrix vector = MyUtils.normalize(position.minus(point));
 
         return new Ray(point, vector);
     }

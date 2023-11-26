@@ -15,5 +15,5 @@ public interface ISceneObject {
 
     Vector diffuseColour(final Ray light, final Matrix point, final Vector intensity);
 
-    Vector specularColour(final Ray viewing, final Ray shadow, final Matrix point, final double intensity);
+    Vector specularColour(final Ray light, final Vector intensity, final Matrix point);
 }

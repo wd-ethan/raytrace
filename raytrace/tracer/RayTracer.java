@@ -22,7 +22,7 @@ public class RayTracer {
 
     public Image trace(final Scene scene) {
         final Matrix eye = new Matrix(new double[][] {{0}, {0}, {0}, {1}});
-        final Image image =  new Image(mResolution);
+        final Image image = new Image(mResolution);
 
         for (final Pixel pixel : mResolution) {
             final Ray ray = pixel.intersect(eye, mView);

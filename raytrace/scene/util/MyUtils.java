@@ -13,8 +13,11 @@ public class MyUtils {
     public static double mag(final Matrix matrix) {
         return Math.sqrt(
                 Math.pow(matrix.get(0, 0), 2)
-                        + Math.pow(matrix.get(1, 0), 2)
-                        + Math.pow(matrix.get(2, 0), 2)
-                        + Math.pow(matrix.get(3, 0), 2));
+                + Math.pow(matrix.get(1, 0), 2)
+                + Math.pow(matrix.get(2, 0), 2));
+    }
+
+    public static Matrix normalize(final Matrix matrix) {
+        return matrix.times(1 / mag(matrix));
     }
 }

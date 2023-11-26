@@ -9,27 +9,27 @@ import java.awt.*;
 
 public abstract class AbstractSceneObject implements ISceneObject {
 
-    protected AbstractSceneObject(final String name, final Color color, final Vector coefficients, final float specular) {
+    protected AbstractSceneObject(final String name, final Color color, final Vector position, final Vector coefficients, final float specular) {
         mName = name;
         mColor = color;
+        mPosition = position;
         mCoefficients = coefficients;
         mSpecular = specular;
     }
 
     private final String mName;
     private final Color mColor;
+    private final Vector mPosition;
     private final Vector mCoefficients;
     private final float mSpecular;
 
-    public Vector specularColour(final Ray viewing, final Ray shadow, final Matrix point, final double intensity) {
-        final Matrix sum = viewing.plus(shadow);
-        final double magnitude = MyUtils.mag(sum);
+    public Vector specularColour(final Ray light, final Vector intensity, final Matrix point) {
+        final Matrix l = light.asVector();
+        final Matrix n = normal(point);
+        final Matrix r = n.times(2 * MyUtils.dot(n, l)).minus(l);
+        final Matrix v = MyUtils.normalize(point.times(-1));
 
-        final Matrix h = sum.times(1 / magnitude);
-
-        final double i = intensity * mCoefficients.z() * Math.pow(MyUtils.dot(h, normal(point)), mSpecular);
-
-        return new Vector(i, i, i);
+        return intensity.times(mCoefficients.z()).times(Math.pow(Math.max(MyUtils.dot(r, v), 0), mSpecular)).times(255);
     }
 
     public Vector ambientColour() {
@@ -37,14 +37,10 @@ public abstract class AbstractSceneObject implements ISceneObject {
     }
 
     public Vector diffuseColour(final Ray light, final Matrix point, final Vector intensity) {
-        final Matrix lightM = light.asVector();
-        final Matrix normal = normal(point);
-        final double dot  = MyUtils.dot(lightM, normal);
+        final Matrix l = light.asVector();
+        final Matrix n = normal(point);
+        final double dot  = Math.max(MyUtils.dot(n, l), 0);
 
-        final double k = dot / MyUtils.mag(lightM.plus(normal));
-
-        final Vector color = new Vector(mColor).times(intensity);
-
-        return color.times(k).times(mCoefficients.y());
+        return new Vector(mColor).times(intensity).times(dot).times(mCoefficients.y());
     }
 }

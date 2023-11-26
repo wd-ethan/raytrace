@@ -34,6 +34,10 @@ public class Ray {
         return mVector.plus(other.mVector);
     }
 
+    public Matrix times(final double a) {
+        return mVector.times(a);
+    }
+
     public Matrix asVector() {
         return mVector;
     }

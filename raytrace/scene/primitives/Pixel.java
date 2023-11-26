@@ -37,14 +37,18 @@ public class Pixel {
     }
 
     public Ray intersect(final Matrix eye, final ViewPort viewPort) {
-        final Matrix cameraCoordinates = inCameraCoordinates(viewPort);
+
+
+        final Matrix cameraCoordinates = asCameraCoordinates(viewPort);
 
         return new Ray(eye, cameraCoordinates);
     }
 
-    private Matrix inCameraCoordinates(final ViewPort view) {
-        final float x = view.width() * (2 * mCol / mCols - 1);
-        final float y = view.height() * (2 * mRow / mRows - 1);
+    private Matrix asCameraCoordinates(final ViewPort view) {
+
+
+        final double x = -view.width() * (mCol / mCols - 0.5);
+        final double y = view.height() * (mRow / mRows - 0.5);
         final float z = -view.mNear;
 
         return new Matrix(new double[][] {{x}, {y}, {z}, {0}});

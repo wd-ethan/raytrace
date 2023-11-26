@@ -6,6 +6,13 @@ import java.awt.*;
 
 public class Vector {
 
+    public Vector(final double x, final double y, final double z, final double a) {
+        mX = x;
+        mY = y;
+        mZ = z;
+        mA = a;
+    }
+
     public Vector(final double x, final double y, final double z) {
         mX = x;
         mY = y;
