@@ -36,20 +36,7 @@ public class Scene {
         if (nearest.isIntersection()) {
             color = color.add(nearest.ambientColour().times(mAmbient));
 
-            final Matrix point = nearest.point();
-
-            for (final Light light : mLights) {
-                // Calculate shadow Ray of this light
-                final Ray shadowRay = light.shadowRay(point);
-                // Check if this Ray hits any other objects in the scene
-                final Intersection local = nearestIntersection(shadowRay);
-
-                if (!local.isIntersection()) {
-                    // Add diffuse and specular color if not in shadow
-                    color = color.add(nearest.diffuseColour(shadowRay, light.intensity()));
-                    color = color.add(nearest.specularColour(shadowRay, light.intensity(), point));
-                }
-            }
+            color = color.add(localIllumination(nearest));
         }
         else {
             color = new Vector(mBackground);
@@ -58,7 +45,7 @@ public class Scene {
         return color.asColor();
     }
 
-    public Intersection nearestIntersection(final Ray ray) {
+    private Intersection nearestIntersection(final Ray ray) {
         Intersection intersection = Intersection.NONE;
 
         for (final ISceneObject object: mObjects) {
@@ -70,5 +57,24 @@ public class Scene {
         }
 
         return intersection;
+    }
+
+    private Vector localIllumination(final Intersection local) {
+        Vector color = new Vector();
+
+        for (final Light light : mLights) {
+            // Calculate shadow Ray of this light
+            final Ray shadowRay = light.shadowRay(local.point());
+            // Check if this Ray hits any other objects in the scene
+            final Intersection shadow = nearestIntersection(shadowRay);
+
+            if (!shadow.isIntersection()) {
+                // Add diffuse and specular color if not in shadow
+                color = color.add(local.diffuseColour(shadowRay, light.intensity()));
+                color = color.add(local.specularColour(shadowRay, light.intensity()));
+            }
+        }
+
+        return color;
     }
 }
