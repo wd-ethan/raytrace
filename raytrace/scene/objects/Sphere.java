@@ -6,9 +6,10 @@ import Jama.*;
 import raytrace.scene.primitives.Intersection;
 import raytrace.scene.primitives.Ray;
 import raytrace.scene.primitives.Vector;
-import raytrace.scene.util.MyUtils;
 
 public class Sphere extends AbstractSceneObject {
+
+    private static final Matrix ORIGIN = new Matrix(new double[][] {{0}, {0}, {0}, {1}});
 
     public Sphere(
             final String name,
@@ -17,7 +18,7 @@ public class Sphere extends AbstractSceneObject {
             final Color color,
             final Vector coefficients,
             final float specular){
-        super(name, color, position, coefficients, specular);
+        super(name, color, coefficients, specular);
 
         mPosition = position;
         mScale = scale;
@@ -25,11 +26,7 @@ public class Sphere extends AbstractSceneObject {
 
     private final Vector mPosition;
     private final Vector mScale;
-    private Matrix mNormal;
 
-    public Matrix normal(final Matrix point) {
-        return mNormal;
-    }
 
     public Intersection intersect(final Ray ray) {
         final double[][] modelView = {
@@ -42,18 +39,16 @@ public class Sphere extends AbstractSceneObject {
         final Matrix modelMatrix = new Matrix(modelView);
         final Matrix inverse = modelMatrix.inverse();
         final Matrix inverseTranspose = modelMatrix.inverse().transpose();
+
         final Ray rayInSphereCoords = ray.transform(inverse);
 
         final double t = solve(rayInSphereCoords);
 
-        if (Intersection.isIntersection(t)) {
-            final Matrix normal = rayInSphereCoords.at(t).minus(new Matrix(new double[][] {{0}, {0}, {0}, {1}}));
-            final Matrix worldNormal = inverseTranspose.times(normal);
-            mNormal = MyUtils.normalize(worldNormal);
-        }
+        final Matrix normalInSphere = rayInSphereCoords.at(t).minus(ORIGIN);
+        final Matrix normalInWorld = inverseTranspose.times(normalInSphere);
 
         return Intersection.isIntersection(t)
-                ? new Intersection(this, ray.at(t), t)
+                ? new Intersection(this, ray.at(t), normalInWorld, t)
                 : Intersection.NONE;
     }
 

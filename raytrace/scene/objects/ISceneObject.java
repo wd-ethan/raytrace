@@ -9,11 +9,9 @@ public interface ISceneObject {
 
     Intersection intersect(final Ray ray);
 
-    Matrix normal(final Matrix position);
-
     Vector ambientColour();
 
-    Vector diffuseColour(final Ray light, final Matrix point, final Vector intensity);
+    Vector diffuseColour(final Ray light, final Matrix normal, final Vector intensity);
 
-    Vector specularColour(final Ray light, final Vector intensity, final Matrix point);
+    Vector specularColour(final Ray light, final Matrix normal, final Matrix point, final Vector intensity);
 }
