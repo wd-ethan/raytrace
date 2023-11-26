@@ -11,6 +11,7 @@ import src.scene.util.MyUtils;
 public class Sphere extends AbstractSceneObject {
 
     private static final Matrix ORIGIN = new Matrix(new double[][] {{0}, {0}, {0}, {1}});
+    private static final int RADIUS = 1;
 
     public Sphere(
             final String name,
@@ -57,7 +58,7 @@ public class Sphere extends AbstractSceneObject {
     private double solve(final Ray ray) {
         final double a = ray.vDot();
         final double b = ray.pDotV();
-        final double c = ray.pDot() - 1;
+        final double c = ray.pDot() - RADIUS;
         final double d = Math.pow(b, 2) - a * c;
 
         double t = -1;

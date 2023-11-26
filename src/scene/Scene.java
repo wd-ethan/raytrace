@@ -35,8 +35,8 @@ public class Scene {
 
         if (nearest.isIntersection()) {
             color = color.add(nearest.ambientColour().times(mAmbient));
-
             color = color.add(localIllumination(nearest));
+            // color = color.add(reflected)
         }
         else {
             color = new Vector(mBackground);

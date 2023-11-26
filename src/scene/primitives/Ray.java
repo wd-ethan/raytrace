@@ -30,14 +30,6 @@ public class Ray {
         return mPoint.plus(mVector.times(t));
     }
 
-    public Matrix plus(final Ray other) {
-        return mVector.plus(other.mVector);
-    }
-
-    public Matrix times(final double a) {
-        return mVector.times(a);
-    }
-
     public Matrix asVector() {
         return mVector;
     }
