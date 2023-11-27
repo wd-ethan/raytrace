@@ -19,8 +19,8 @@ public class RayTracer {
         mView = view;
     }
 
-    final Resolution mResolution;
-    final ViewPort mView;
+    private final Resolution mResolution;
+    private final ViewPort mView;
 
     public Image trace(final Scene scene) {
         final Image image = new Image(mResolution);

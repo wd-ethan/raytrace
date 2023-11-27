@@ -39,4 +39,8 @@ public abstract class AbstractSceneObject implements ISceneObject {
 
         return intensity.times(mCoefficients.z()).times(Math.pow(Math.max(MyUtils.dot(r, v), 0), mSpecular)).times(255);
     }
+
+    public Vector reflectedColour(final Vector color) {
+        return color.times(mCoefficients.a());
+    }
 }

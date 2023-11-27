@@ -40,7 +40,7 @@ public class Sphere extends AbstractSceneObject {
 
         final Matrix modelMatrix = new Matrix(modelView);
         final Matrix inverse = modelMatrix.inverse();
-        final Matrix inverseTranspose = modelMatrix.inverse().transpose();
+        final Matrix inverseTranspose = inverse.transpose();
 
         final Ray rayInSphereCoords = ray.transform(inverse);
 
@@ -48,7 +48,13 @@ public class Sphere extends AbstractSceneObject {
 
         final Matrix normalInSphere = rayInSphereCoords.at(t).minus(ORIGIN);
         final Matrix normalInWorld = inverseTranspose.times(normalInSphere);
-        final Matrix normal = MyUtils.normalize(normalInWorld);
+        // TODO: drop 0
+        final Matrix normal = MyUtils.normalize(new Matrix(new double[][] {
+                {normalInWorld.get(0, 0)},
+                {normalInWorld.get(1, 0)},
+                {normalInWorld.get(2, 0)},
+                {0}
+        }));
 
         return Intersection.isIntersection(t)
                 ? new Intersection(this, ray.at(t), normal, t)

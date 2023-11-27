@@ -11,6 +11,9 @@ import java.util.Collection;
 
 public class Scene {
 
+    private static final Color BLACK = Color.black;
+    private static final Vector NONE = new Vector(BLACK);
+
     public Scene(
             final Collection<ISceneObject> objects,
             final Collection<Light> lights,
@@ -28,20 +31,29 @@ public class Scene {
     private final Vector mAmbient;
 
     public Color trace(final Ray ray) {
-        Vector color = new Vector(0, 0, 0);
-
-        final Intersection nearest = nearestIntersection(ray);
-
-        if (nearest.isIntersection()) {
-            color = color.add(nearest.ambientColour().times(mAmbient));
-            color = color.add(localIllumination(nearest));
-            // color = color.add(reflected)
-        }
-        else {
-            color = new Vector(mBackground);
-        }
+        final Vector color = ray.isDead() ? NONE : intersect(ray);
 
         return color.asColor();
+    }
+
+    private Vector intersect(final Ray ray) {
+        final Intersection nearest = nearestIntersection(ray);
+
+        return nearest.isIntersection() ? sumColour(ray, nearest) : miss(ray);
+    }
+
+    private Vector sumColour(final Ray ray, final Intersection intersection) {
+        Vector color = NONE;
+
+        color = color.add(intersection.ambientColour().times(mAmbient));
+        color = color.add(localIllumination(intersection));
+        color = color.add(intersection.reflectedColour(ray, this::trace));
+
+        return color;
+    }
+
+    private Vector miss(final Ray ray) {
+        return ray.isReflected() ? NONE : new Vector(mBackground);
     }
 
     private Intersection nearestIntersection(final Ray ray) {
@@ -60,7 +72,7 @@ public class Scene {
     }
 
     private Vector localIllumination(final Intersection local) {
-        Vector color = new Vector();
+        Vector color = NONE;
 
         for (final Light light : mLights) {
             // Calculate shadow Ray of this light

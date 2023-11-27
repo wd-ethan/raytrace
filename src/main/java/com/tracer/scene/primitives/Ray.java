@@ -17,7 +17,16 @@ public class Ray {
 
     private final Matrix mPoint;
     private final Matrix mVector;
-    private final int mDepth;
+    final int mDepth;
+
+    public boolean isDead() {
+        return mDepth <= 0;
+    }
+
+    public boolean isReflected() {
+        // TODO: more robust check
+        return mDepth < 3;
+    }
 
     public Ray transform(final Matrix transformation) {
         final Matrix parametric = transformation.times(mVector);

@@ -6,6 +6,7 @@ import java.awt.*;
 
 public class Vector {
 
+    // TODO: remove messy conversions class
     public Vector(final double x, final double y, final double z, final double a) {
         mX = x;
         mY = y;
@@ -58,6 +59,10 @@ public class Vector {
 
     public double z() {
         return mZ;
+    }
+
+    public double a() {
+        return mA;
     }
 
     public Vector add(final Vector vector) {

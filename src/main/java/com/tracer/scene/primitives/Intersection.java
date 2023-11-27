@@ -2,6 +2,10 @@ package src.main.java.com.tracer.scene.primitives;
 
 import Jama.Matrix;
 import src.main.java.com.tracer.scene.objects.ISceneObject;
+import src.main.java.com.tracer.scene.util.MyUtils;
+
+import java.awt.*;
+import java.util.function.Function;
 
 public class Intersection implements Comparable<Intersection> {
 
@@ -39,6 +43,15 @@ public class Intersection implements Comparable<Intersection> {
 
     public Vector specularColour(final Ray light, final Vector intensity) {
         return mObject.specularColour(light, mNormal, mPoint, intensity);
+    }
+
+    public Vector reflectedColour(final Ray initial, final Function<Ray, Color> tracer) {
+        final Matrix c = MyUtils.normalize(initial.asVector());
+        final Matrix v = mNormal.times(-2 * MyUtils.dot(mNormal, c)).plus(c);
+
+        final Ray reflected =  new Ray(point(), MyUtils.normalize(v), initial.mDepth - 1);
+        return mObject.reflectedColour(new Vector(tracer.apply(reflected)));
+
     }
 
     public Matrix point() {
