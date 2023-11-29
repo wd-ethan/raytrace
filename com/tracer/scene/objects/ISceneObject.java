@@ -1,0 +1,19 @@
+package com.tracer.scene.objects;
+
+import Jama.Matrix;
+import com.tracer.scene.primitives.Intersection;
+import com.tracer.primitives.Ray;
+import com.tracer.scene.primitives.Vector;
+
+public interface ISceneObject {
+
+    Intersection intersect(final Ray ray);
+
+    Vector ambientColour();
+
+    Vector diffuseColour(final Ray light, final Matrix point, final Vector intensity);
+
+    Vector specularColour(final Ray light, final Matrix normal, final Matrix point, final Vector intensity);
+
+    Vector reflectedColour(final Vector color);
+}
