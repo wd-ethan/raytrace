@@ -34,69 +34,16 @@ followed by,
 ```
 ├── com
 │        └── tracer
-│            ├── OutputFile.java
-│            ├── RayTracer.java
+│            ├── RayTracer.java : Main class
 │            ├── primitives
+│                   └── Contains Ray tracing primitive objects
 │            └── scene
-│           ├── Scene.class
-│           ├── Scene.java
-│           ├── SceneBuilder.class
-│           ├── SceneBuilder.java
-│           ├── SceneFile.class
-│           ├── SceneFile.java
-│           ├── decoders
-│           │   ├── AbstractDecoder.class
-│           │   ├── AbstractDecoder.java
-│           │   ├── AmbientDecoder.class
-│           │   ├── AmbientDecoder.java
-│           │   ├── BackgroundDecoder.class
-│           │   ├── BackgroundDecoder.java
-│           │   ├── BottomPlaneDecoder.class
-│           │   ├── BottomPlaneDecoder.java
-│           │   ├── IDecoder.class
-│           │   ├── IDecoder.java
-│           │   ├── LeftPlaneDecoder.class
-│           │   ├── LeftPlaneDecoder.java
-│           │   ├── LightDecoder.class
-│           │   ├── LightDecoder.java
-│           │   ├── NameDecoder.class
-│           │   ├── NameDecoder.java
-│           │   ├── NearPlaneDecoder.class
-│           │   ├── NearPlaneDecoder.java
-│           │   ├── ResolutionDecoder.class
-│           │   ├── ResolutionDecoder.java
-│           │   ├── RightPlaneDecoder.class
-│           │   ├── RightPlaneDecoder.java
-│           │   ├── SphereDecoder.class
-│           │   ├── SphereDecoder.java
-│           │   ├── TopPlaneDecoder.class
-│           │   └── TopPlaneDecoder.java
-│           ├── objects
-│           │   ├── AbstractSceneObject.class
-│           │   ├── AbstractSceneObject.java
-│           │   ├── ISceneObject.class
-│           │   ├── ISceneObject.java
-│           │   ├── Sphere.class
-│           │   └── Sphere.java
-│           ├── primitives
-│           │   ├── Image.class
-│           │   ├── Image.java
-│           │   ├── Intersection.class
-│           │   ├── Intersection.java
-│           │   ├── Light.class
-│           │   ├── Light.java
-│           │   ├── Pixel.class
-│           │   ├── Pixel.java
-│           │   ├── Ray.class
-│           │   ├── Ray.java
-│           │   ├── Resolution$1.class
-│           │   ├── Resolution.class
-│           │   ├── Resolution.java
-│           │   ├── Vector.class
-│           │   ├── Vector.java
-│           │   ├── ViewPort.class
-│           │   └── ViewPort.java
-│           └── util
-│               ├── MyUtils.class
-│               └── MyUtils.java
+│                ├── decoders
+│                       └── Decoders which convert <input> into primitive objects
+│                ├── objects
+│                       └── Objects currently supported for tracing
+│                ├── primitives
+│                       └── Primitive objects
+│                └── util
+│                       └── Utility functions
 ```
