@@ -4,9 +4,11 @@ import Jama.Matrix;
 
 import java.awt.*;
 
+/**
+ * Used to convert between different ways to represent coordinates, vectors, colours, etc.
+ */
 public class Vector {
 
-    // TODO: remove messy conversions class
     public Vector(final double x, final double y, final double z, final double a) {
         mX = x;
         mY = y;

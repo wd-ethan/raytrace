@@ -15,8 +15,12 @@ import java.util.concurrent.TimeUnit;
 
 import static com.tracer.RayTracer.ORIGIN;
 
+/**
+ * Represents a raytracer which can trace a scene and produce an image.
+ */
 public class RayTracer {
 
+    public static final int TIMEOUT = 20;
     public static final Matrix ORIGIN = new Matrix(new double[][] {{0}, {0}, {0}, {1}});
 
     public RayTracer(final Resolution resolution, final ViewPort view) {
@@ -27,6 +31,12 @@ public class RayTracer {
     private final Resolution mResolution;
     private final ViewPort mView;
 
+    /**
+     * Traces rays from an eye through a scene to produce an image.
+     *
+     * @param scene The {@link Scene} to trace.
+     * @return an {@link Image} of the traced {@link Scene}.
+     */
     public Image trace(final Scene scene) {
         final Image image = new Image(mResolution);
         final ExecutorService executor = Executors.newFixedThreadPool(16);
@@ -39,7 +49,7 @@ public class RayTracer {
         executor.shutdown();
 
         try {
-            executor.awaitTermination(20, TimeUnit.SECONDS);
+            executor.awaitTermination(TIMEOUT, TimeUnit.SECONDS);
 
         } catch (InterruptedException e) {
             throw new RuntimeException("Scene generation exceeded timeout.", e);

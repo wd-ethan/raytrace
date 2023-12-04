@@ -10,6 +10,9 @@ import java.nio.file.Paths;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+/**
+ * Represents the input data and how to decode it.
+ */
 public class SceneFile {
 
     private static final Map<String, IDecoder> DECODER_MAP = Map.ofEntries(
@@ -32,6 +35,12 @@ public class SceneFile {
 
     private final String mFilepath;
 
+    /**
+     * Decodes the data in this {@link SceneFile} into a {@link SceneBuilder}.
+     *
+     * @return a {@link SceneBuilder} which can build objects needed for a {@link com.tracer.RayTracer}.
+     * @throws FileNotFoundException if there are problems opening the data in this {@link SceneFile}.
+     */
     public SceneBuilder decode() throws FileNotFoundException {
         SceneBuilder scene = new SceneBuilder();
 

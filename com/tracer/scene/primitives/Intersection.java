@@ -8,12 +8,24 @@ import com.tracer.scene.util.MyUtils;
 import java.awt.*;
 import java.util.function.Function;
 
+/**
+ * Responsible for traits related to a {@link Ray} intersecting a {@link ISceneObject}.
+ */
 public class Intersection implements Comparable<Intersection> {
 
-    public static double MINIMUM_T = 0.000001;
+    /**
+     * There are floating point arithmetic issues with starting at 0.
+     */
+    public static double MINIMUM_T = 0.0000001;
     public static double MAXIMUM_T = Double.POSITIVE_INFINITY;
     public static Intersection NONE = new Intersection(null, null , null, MAXIMUM_T);
 
+    /**
+     * Check if the given float is a valid {@link Intersection}.
+     *
+     * @param t the number to check.
+     * @return {@code true} if this is a valid intersection, {@code false} otherwise.
+     */
     public static boolean isIntersection(final double t) {
         return t > MINIMUM_T && t < MAXIMUM_T;
     }

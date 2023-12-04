@@ -7,6 +7,9 @@ import com.tracer.scene.primitives.Vector;
 
 import java.awt.*;
 
+/**
+ * Holds logic which is common to all {@link ISceneObject}s.
+ */
 public abstract class AbstractSceneObject implements ISceneObject {
 
     protected AbstractSceneObject(final String name, final Color color, final Vector coefficients, final float specular) {

@@ -13,6 +13,9 @@ import java.awt.*;
 import java.util.Collection;
 import java.util.HashSet;
 
+/**
+ * Builder class which is responsible for constructing objects needed by a {@link RayTracer}.
+ */
 public class SceneBuilder {
 
     SceneBuilder() {}
@@ -29,14 +32,29 @@ public class SceneBuilder {
     private Vector mAmbient = new Vector(0, 0, 0);
     private String mOutput = "test.ppm";
 
+    /**
+     * Builds a {@link Scene}.
+     *
+     * @return a constructed {@link Scene}.
+     */
     public Scene buildScene() {
-        return new Scene(mObjects, mLights, mBackground, mAmbient);
+        return new Scene(mObjects, mLights, new ViewPort(mNear, mTop, mBottom, mLeft, mRight), mBackground, mAmbient);
     }
 
+    /**
+     * Builds a {@link RayTracer}.
+     *
+     * @return a constructed {@link RayTracer}.
+     */
     public RayTracer buildRayTracer() {
         return new RayTracer(mResolution, new ViewPort(mNear, mTop, mBottom, mLeft, mRight));
     }
 
+    /**
+     * build a {@link OutputFile}.
+     *
+     * @return a constructed {@link OutputFile}.
+     */
     public OutputFile buildOutputFile() {
         return new OutputFile(mOutput);
     }

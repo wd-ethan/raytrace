@@ -1,6 +1,7 @@
 package com.tracer.primitives;
 
 import Jama.Matrix;
+import com.tracer.scene.util.MyUtils;
 
 import java.awt.*;
 
@@ -39,13 +40,13 @@ public class Pixel implements Comparable<Pixel>{
     public Ray intersect(final Matrix eye, final ViewPort viewPort) {
         final Matrix cameraCoordinates = asCameraCoordinates(viewPort);
 
-        return new Ray(eye, cameraCoordinates);
+        return new Ray(eye, MyUtils.normalize(cameraCoordinates));
     }
 
     private Matrix asCameraCoordinates(final ViewPort view) {
         final double x = -view.width() * ((double) mCol / mCols - 0.5);
         final double y = view.height() * ((double) mRow / mRows - 0.5);
-        final float z = -view.mNear;
+        final float z = -view.nearPlane();
 
         return new Matrix(new double[][] {{x}, {y}, {z}, {0}});
     }

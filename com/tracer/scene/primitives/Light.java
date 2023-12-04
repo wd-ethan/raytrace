@@ -4,6 +4,9 @@ import Jama.Matrix;
 import com.tracer.primitives.Ray;
 import com.tracer.scene.util.MyUtils;
 
+/**
+ * Produces light rays.
+ */
 public class Light {
 
     public Light(final String name, final Vector position, final Vector intensity){
@@ -16,6 +19,12 @@ public class Light {
     private final Vector mPosition;
     private final Vector mIntensity;
 
+    /**
+     * Given a point in a {@link com.tracer.scene.Scene} calculates the shadow ray of this light.
+     *
+     * @param point the originating point.
+     * @return a shadow {@link Ray}.
+     */
     public Ray shadowRay(final Matrix point) {
         final Matrix position = new Matrix(new double [][] {
                 {mPosition.x()},
@@ -26,7 +35,7 @@ public class Light {
 
         final Matrix vector = MyUtils.normalize(position.minus(point));
 
-        return new Ray(point, vector);
+        return new Ray(point, vector, 0);
     }
 
     public Vector intensity() {

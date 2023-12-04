@@ -1,5 +1,6 @@
 package com.tracer.scene;
 
+import com.tracer.primitives.ViewPort;
 import com.tracer.scene.objects.ISceneObject;
 import com.tracer.scene.primitives.Intersection;
 import com.tracer.scene.primitives.Light;
@@ -9,6 +10,9 @@ import com.tracer.scene.primitives.Vector;
 import java.awt.*;
 import java.util.Collection;
 
+/**
+ * A {@link Scene} is a collection of objects, lighting, and a background.
+ */
 public class Scene {
 
     private static final Color BLACK = Color.black;
@@ -17,31 +21,53 @@ public class Scene {
     public Scene(
             final Collection<ISceneObject> objects,
             final Collection<Light> lights,
+            final ViewPort view,
             final Color background,
             final Vector ambient) {
         mObjects = objects;
         mLights = lights;
+        mView = view;
         mBackground = background;
         mAmbient = ambient;
     }
 
     private final Collection<ISceneObject> mObjects;
     private final Collection<Light> mLights;
+    private final ViewPort mView;
     private final Color mBackground;
     private final Vector mAmbient;
 
+    /**
+     * Traces a given {@link Ray} through this {@link Scene}.
+     *
+     * @param ray the {@link Ray} to trace.
+     * @return the {@link Color} that the pixel this ray passes through should be.
+     */
     public Color trace(final Ray ray) {
         final Vector color = ray.isDead() ? NONE : intersect(ray);
 
         return color.asColor();
     }
 
+    /**
+     * Checks the given {@link Ray} for intersections in this {@link Scene}.
+     *
+     * @param ray the {@link Ray} to intersect.
+     * @return the colour this produced by intersection (or lack of one),
+     */
     private Vector intersect(final Ray ray) {
         final Intersection nearest = nearestIntersection(ray);
 
         return nearest.isIntersection() ? sumColour(ray, nearest) : miss(ray);
     }
 
+    /**
+     * Combines all colours of an intersection (ambient, local, reflected, etc.).
+     *
+     * @param ray the {@link Ray} which intersected.
+     * @param intersection the {@link Intersection} to calculate colour for.
+     * @return the colour of this {@link Intersection}.
+     */
     private Vector sumColour(final Ray ray, final Intersection intersection) {
         Vector color = NONE;
 
@@ -52,10 +78,22 @@ public class Scene {
         return color;
     }
 
+    /**
+     * Handles what to do in the case of no {@link Intersection}.
+     *
+     * @param ray the {@link Ray} which has missed.
+     * @return the colour of this "miss".
+     */
     private Vector miss(final Ray ray) {
         return ray.isReflected() ? NONE : new Vector(mBackground);
     }
 
+    /**
+     * Finds the nearest {@link Intersection} in this scene.
+     *
+     * @param ray the {@link Ray} to calculate intersection for.
+     * @return the nearest {@link Intersection} in this {@link Scene}.
+     */
     private Intersection nearestIntersection(final Ray ray) {
         Intersection intersection = Intersection.NONE;
 
@@ -71,6 +109,12 @@ public class Scene {
         return intersection;
     }
 
+    /**
+     * Calculates diffuse, specular, and reflected colour of an {@link Intersection}.
+     *
+     * @param local the {@link Intersection} to calculate colour for.
+     * @return the local colour of the given {@link Intersection}.
+     */
     private Vector localIllumination(final Intersection local) {
         Vector color = NONE;
 
