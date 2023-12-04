@@ -1,9 +1,10 @@
 package com.tracer.primitives;
 
-import com.tracer.primitives.Pixel;
-
 import java.util.Iterator;
 
+/**
+ * Represents a resolution of a screen, and can produce {@link Pixel}s from the {@link Resolution}.
+ */
 public class Resolution implements Iterable<Pixel> {
 
     public Resolution(final int columns, final int rows) {
@@ -26,6 +27,11 @@ public class Resolution implements Iterable<Pixel> {
         return mRows;
     }
 
+    /**
+     * Iterates the {@link Pixel}s in a {@link Resolution}.
+     *
+     * @return an {@link Iterator} of {@link Pixel}s.
+     */
     @Override
     public Iterator<Pixel> iterator() {
         return new Iterator<>() {

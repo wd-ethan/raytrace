@@ -15,7 +15,7 @@ public class Ray {
         this(eye, vector, 3);
     }
 
-    private final Matrix mPoint;
+    public final Matrix mPoint;
     private final Matrix mVector;
     final int mDepth;
 
@@ -24,8 +24,11 @@ public class Ray {
     }
 
     public boolean isReflected() {
-        // TODO: more robust check
         return mDepth < 3;
+    }
+
+    public boolean isFromEye() {
+        return mDepth == 3;
     }
 
     public int reflectedDepth() {
@@ -36,11 +39,20 @@ public class Ray {
         final Matrix parametric = transformation.times(mVector);
         final Matrix eye = transformation.times(mPoint);
 
-        return new Ray(eye, parametric);
+        return new Ray(eye, parametric, mDepth);
     }
 
     public Matrix at(final double t) {
         return mPoint.plus(mVector.times(t));
+    }
+
+    public double solve(final Matrix point) {
+        final Matrix vector3D = mVector.getMatrix(0, 2, 0, 0);
+        final Matrix position3d = mPoint.getMatrix(0, 2, 0, 0);
+
+        final Matrix solution = vector3D.solve(point.minus(position3d));
+
+        return solution.get(0, 0);
     }
 
     public Matrix asVector() {

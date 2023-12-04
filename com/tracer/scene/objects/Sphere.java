@@ -33,7 +33,14 @@ public class Sphere extends AbstractSceneObject {
     private final Vector mPosition;
     private final Vector mScale;
 
-    public Intersection intersect(final Ray ray) {
+    /**
+     * Calculates properties of an {@link Intersection} with this {@link Sphere}.
+     *
+     * @param ray the {@link Ray} which to check {@link Intersection}.
+     * @param view the {@link ViewPort} to validate the {@link Intersection} with.
+     * @return the {@link Intersection} of the given {@link Ray} with this {@link Sphere}.
+     */
+    public Intersection intersect(final Ray ray, final ViewPort view) {
         final double[][] modelView = {
                 {mScale.x(), 0, 0, mPosition.x()},
                 {0, mScale.y(), 0, mPosition.y()},
@@ -49,24 +56,28 @@ public class Sphere extends AbstractSceneObject {
         final Ray rayInSphereCoords = ray.transform(inverse);
 
         // Calculate intersections
-        final double min = ray.isReflected() ? Intersection.MINIMUM_T : ViewPort.minDepth(ray);
+        final double min = ray.isFromEye() ? view.minDepth(ray) : Intersection.MINIMUM_T;
+
+        // Solve with a min, and without
         final double t = solve(rayInSphereCoords, min);
         final double t2 = solve(rayInSphereCoords, Intersection.MINIMUM_T);
 
         // Calculate normal
-        final Matrix normalInSphere = rayInSphereCoords.at(t).minus(ORIGIN);
+        Matrix normalInSphere = rayInSphereCoords.at(t).minus(ORIGIN);
+
+        // flip normal if inside sphere
+        if (t != t2) {
+            normalInSphere = normalInSphere.times(-1);
+        }
+
+        // move back into world coordinates
         final Matrix normalInWorld = inverseTranspose.times(normalInSphere);
-        Matrix normal = MyUtils.normalize(new Matrix(new double[][] {
+        final Matrix normal = MyUtils.normalize(new Matrix(new double[][] {
                 {normalInWorld.get(0, 0)},
                 {normalInWorld.get(1, 0)},
                 {normalInWorld.get(2, 0)},
                 {0}
         }));
-
-        // We are on the inside of the sphere
-        if (t != t2) {
-            normal = normal.times(-1);
-        }
 
         return Intersection.isIntersection(t)
                 ? new Intersection(this, ray.at(t), normal, t)

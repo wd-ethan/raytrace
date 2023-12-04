@@ -35,7 +35,19 @@ public class Light {
 
         final Matrix vector = MyUtils.normalize(position.minus(point));
 
-        return new Ray(point, vector, 0);
+        return new Ray(point, vector, 1);
+    }
+
+    public Intersection intersect(final Ray shadow) {
+        final Matrix position = new Matrix(new double [][] {
+                {mPosition.x()},
+                {mPosition.y()},
+                {mPosition.z()}
+        });
+
+        final double t = shadow.solve(position);
+
+        return new Intersection(null, null, null, t);
     }
 
     public Vector intensity() {

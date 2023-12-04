@@ -1,5 +1,6 @@
 package com.tracer.scene;
 
+import com.tracer.Tracer;
 import com.tracer.scene.objects.ISceneObject;
 import com.tracer.scene.primitives.Light;
 import com.tracer.primitives.Resolution;
@@ -7,14 +8,13 @@ import com.tracer.scene.objects.Sphere;
 import com.tracer.scene.primitives.Vector;
 import com.tracer.primitives.ViewPort;
 import com.tracer.primitives.OutputFile;
-import com.tracer.RayTracer;
 
 import java.awt.*;
 import java.util.Collection;
 import java.util.HashSet;
 
 /**
- * Builder class which is responsible for constructing objects needed by a {@link RayTracer}.
+ * Builder class which is responsible for constructing objects needed by a {@link Tracer}.
  */
 public class SceneBuilder {
 
@@ -42,12 +42,12 @@ public class SceneBuilder {
     }
 
     /**
-     * Builds a {@link RayTracer}.
+     * Builds a {@link Tracer}.
      *
-     * @return a constructed {@link RayTracer}.
+     * @return a constructed {@link Tracer}.
      */
-    public RayTracer buildRayTracer() {
-        return new RayTracer(mResolution, new ViewPort(mNear, mTop, mBottom, mLeft, mRight));
+    public Tracer buildRayTracer() {
+        return new Tracer(mResolution, new ViewPort(mNear, mTop, mBottom, mLeft, mRight));
     }
 
     /**

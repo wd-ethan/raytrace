@@ -1,6 +1,7 @@
 package com.tracer.scene.objects;
 
 import Jama.Matrix;
+import com.tracer.primitives.ViewPort;
 import com.tracer.scene.primitives.Intersection;
 import com.tracer.primitives.Ray;
 import com.tracer.scene.primitives.Vector;
@@ -10,7 +11,7 @@ import com.tracer.scene.primitives.Vector;
  */
 public interface ISceneObject {
 
-    Intersection intersect(final Ray ray);
+    Intersection intersect(final Ray ray, final ViewPort view);
 
     Vector ambientColour();
 

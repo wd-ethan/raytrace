@@ -1,13 +1,15 @@
 # CSC 305 Assignment #3 - Java Raytracer
 
 This repo contains a full raytracer implementation which supports sphere objects
-and a depth of three reflections. It is written with future extension in mind.
+and a depth of three reflections. It does not currently support refracted light rays.
+It is written with future extension in mind.
 
 ## Requirements
 
 This project requires the following dependencies:
 
 - [JDK 20](https://jdk.java.net/21/) (or newer)
+- [JAMA 1.0.2](https://math.nist.gov/javanumerics/jama/)
 
 ## Build and Run
 
@@ -15,7 +17,7 @@ This project requires the following dependencies:
 
 There is a pre-compiled jar of this project to simplify the run process.
 
-     java -jar raytrace.jar <input.txt>
+     java -jar RayTracer.jar <input.txt>
 
 ### Compiled
 
@@ -23,27 +25,10 @@ Alternatively you can compile and run this program locally.
 
 First run,
 
-     javac -cp .:lib/Jama-1.0.2.jar com/tracer/RayTracer.java
+     javac -cp .:lib/Jama-1.0.2.jar RayTracer.java
 
 followed by,
 
-     java -cp .:lib/Jama-1.0.2.jar com.tracer.RayTracer <input.txt>
+     java -cp .:lib/Jama-1.0.2.jar RayTracer <input.txt>
 
 ## Project Structure
-
-```
-├── com
-│        └── tracer
-│            ├── RayTracer.java : Main class
-│            ├── primitives
-│                   └── Contains Ray tracing primitive objects
-│            └── scene
-│                ├── decoders
-│                       └── Decoders which convert <input> into primitive objects
-│                ├── objects
-│                       └── Objects currently supported for tracing
-│                ├── primitives
-│                       └── Primitive objects
-│                └── util
-│                       └── Utility functions
-```

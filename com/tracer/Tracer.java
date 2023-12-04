@@ -13,17 +13,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import static com.tracer.RayTracer.ORIGIN;
 
 /**
  * Represents a raytracer which can trace a scene and produce an image.
  */
-public class RayTracer {
+public class Tracer {
 
-    public static final int TIMEOUT = 20;
-    public static final Matrix ORIGIN = new Matrix(new double[][] {{0}, {0}, {0}, {1}});
+    public static final int TIMEOUT = 120;
 
-    public RayTracer(final Resolution resolution, final ViewPort view) {
+
+    public Tracer(final Resolution resolution, final ViewPort view) {
         mResolution = resolution;
         mView = view;
     }
@@ -64,7 +63,7 @@ public class RayTracer {
         final SceneBuilder builder = sceneFile.decode();
 
         final Scene scene = builder.buildScene();
-        final RayTracer tracer = builder.buildRayTracer();
+        final Tracer tracer = builder.buildRayTracer();
         final OutputFile output = builder.buildOutputFile();
 
         final Image image = tracer.trace(scene);
@@ -72,7 +71,12 @@ public class RayTracer {
     }
 }
 
+/**
+ * Represents the task of calculating an individual pixel, for concurrency.
+ */
 class TraceTask implements Runnable {
+
+    public static final Matrix ORIGIN = new Matrix(new double[][] {{0}, {0}, {0}, {1}});
 
     TraceTask(final Scene scene, final Pixel pixel, final ViewPort view, final Image image) {
         mScene = scene;

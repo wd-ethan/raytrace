@@ -16,7 +16,7 @@ public class Intersection implements Comparable<Intersection> {
     /**
      * There are floating point arithmetic issues with starting at 0.
      */
-    public static double MINIMUM_T = 0.0000001;
+    public static double MINIMUM_T = 0.00001;
     public static double MAXIMUM_T = Double.POSITIVE_INFINITY;
     public static Intersection NONE = new Intersection(null, null , null, MAXIMUM_T);
 

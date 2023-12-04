@@ -98,7 +98,7 @@ public class Scene {
         Intersection intersection = Intersection.NONE;
 
         for (final ISceneObject object: mObjects) {
-            Intersection test = object.intersect(ray);
+            Intersection test = object.intersect(ray, mView);
 
             // Find the nearest intersection
             if (test.isIntersection() && test.compareTo(intersection) < 0) {
@@ -121,10 +121,11 @@ public class Scene {
         for (final Light light : mLights) {
             // Calculate shadow Ray of this light
             final Ray shadowRay = light.shadowRay(local.point());
+            final Intersection lightT = light.intersect(shadowRay);
             // Check if this Ray hits any other objects in the scene
             final Intersection shadow = nearestIntersection(shadowRay);
 
-            if (!shadow.isIntersection()) {
+            if (!shadow.isIntersection() || lightT.compareTo(shadow) < 0) {
                 // Add diffuse and specular color if not in shadow
                 color = color.add(local.diffuseColour(shadowRay, light.intensity()));
                 color = color.add(local.specularColour(shadowRay, light.intensity()));

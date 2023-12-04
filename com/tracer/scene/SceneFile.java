@@ -38,7 +38,7 @@ public class SceneFile {
     /**
      * Decodes the data in this {@link SceneFile} into a {@link SceneBuilder}.
      *
-     * @return a {@link SceneBuilder} which can build objects needed for a {@link com.tracer.RayTracer}.
+     * @return a {@link SceneBuilder} which can build objects needed for a {@link RayTracer}.
      * @throws FileNotFoundException if there are problems opening the data in this {@link SceneFile}.
      */
     public SceneBuilder decode() throws FileNotFoundException {

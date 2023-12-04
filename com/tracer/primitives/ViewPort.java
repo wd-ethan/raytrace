@@ -1,8 +1,5 @@
 package com.tracer.primitives;
 
-import Jama.Matrix;
-
-import java.lang.management.MemoryNotificationInfo;
 
 public class ViewPort {
 
@@ -37,7 +34,7 @@ public class ViewPort {
         return mNear;
     }
 
-    public static double minDepth(final Ray ray) {
-        return - 1 / ray.asVector().get(2, 0);
+    public double minDepth(final Ray ray) {
+        return - mNear / ray.asVector().get(2, 0);
     }
 }
