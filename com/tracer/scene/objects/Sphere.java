@@ -3,11 +3,15 @@ package com.tracer.scene.objects;
 import java.awt.*;
 
 import Jama.*;
+import com.tracer.primitives.ViewPort;
 import com.tracer.scene.primitives.Intersection;
 import com.tracer.primitives.Ray;
 import com.tracer.scene.primitives.Vector;
 import com.tracer.scene.util.MyUtils;
 
+/**
+ * A spherical object.
+ */
 public class Sphere extends AbstractSceneObject {
 
     private static final Matrix ORIGIN = new Matrix(new double[][] {{0}, {0}, {0}, {1}});
@@ -29,7 +33,14 @@ public class Sphere extends AbstractSceneObject {
     private final Vector mPosition;
     private final Vector mScale;
 
-    public Intersection intersect(final Ray ray) {
+    /**
+     * Calculates properties of an {@link Intersection} with this {@link Sphere}.
+     *
+     * @param ray the {@link Ray} which to check {@link Intersection}.
+     * @param view the {@link ViewPort} to validate the {@link Intersection} with.
+     * @return the {@link Intersection} of the given {@link Ray} with this {@link Sphere}.
+     */
+    public Intersection intersect(final Ray ray, final ViewPort view) {
         final double[][] modelView = {
                 {mScale.x(), 0, 0, mPosition.x()},
                 {0, mScale.y(), 0, mPosition.y()},
@@ -37,17 +48,30 @@ public class Sphere extends AbstractSceneObject {
                 {0, 0, 0, 1}
         };
 
+        // Get into sphere coordinates
         final Matrix modelMatrix = new Matrix(modelView);
         final Matrix inverse = modelMatrix.inverse();
         final Matrix inverseTranspose = inverse.transpose();
 
         final Ray rayInSphereCoords = ray.transform(inverse);
 
-        final double t = solve(rayInSphereCoords);
+        // Calculate intersections
+        final double min = ray.isFromEye() ? view.minDepth(ray) : Intersection.MINIMUM_T;
 
-        final Matrix normalInSphere = rayInSphereCoords.at(t).minus(ORIGIN);
+        // Solve with a min, and without
+        final double t = solve(rayInSphereCoords, min);
+        final double t2 = solve(rayInSphereCoords, Intersection.MINIMUM_T);
+
+        // Calculate normal
+        Matrix normalInSphere = rayInSphereCoords.at(t).minus(ORIGIN);
+
+        // flip normal if inside sphere
+        if (t != t2) {
+            normalInSphere = normalInSphere.times(-1);
+        }
+
+        // move back into world coordinates
         final Matrix normalInWorld = inverseTranspose.times(normalInSphere);
-        // TODO: drop 0
         final Matrix normal = MyUtils.normalize(new Matrix(new double[][] {
                 {normalInWorld.get(0, 0)},
                 {normalInWorld.get(1, 0)},
@@ -60,20 +84,24 @@ public class Sphere extends AbstractSceneObject {
                 : Intersection.NONE;
     }
 
-    private double solve(final Ray ray) {
+    private double solve(final Ray ray, final double min) {
         final double a = ray.vDot();
         final double b = ray.pDotV();
         final double c = ray.pDot() - RADIUS;
         final double d = Math.pow(b, 2) - a * c;
 
-        double t = -1;
+        double t = Double.POSITIVE_INFINITY;
 
         if (d == 0) {
-            t = -b / a;
+            t = - b / a;
+            return t > min ? t : Double.POSITIVE_INFINITY;
         }
         else if (d > 0){
-            final double t1 =  -b/a + Math.sqrt(d) / a;
-            final double t2 =  -b/a - Math.sqrt(d) / a;
+            double t1 =  -b/a + Math.sqrt(d) / a;
+            double t2 =  -b/a - Math.sqrt(d) / a;
+
+            t1 = t1 > min ? t1 : Double.POSITIVE_INFINITY;
+            t2 = t2 > min ? t2 : Double.POSITIVE_INFINITY;
 
             return Math.min(t1, t2);
         }

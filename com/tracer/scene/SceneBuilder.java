@@ -1,5 +1,6 @@
 package com.tracer.scene;
 
+import com.tracer.Tracer;
 import com.tracer.scene.objects.ISceneObject;
 import com.tracer.scene.primitives.Light;
 import com.tracer.primitives.Resolution;
@@ -7,12 +8,14 @@ import com.tracer.scene.objects.Sphere;
 import com.tracer.scene.primitives.Vector;
 import com.tracer.primitives.ViewPort;
 import com.tracer.primitives.OutputFile;
-import com.tracer.RayTracer;
 
 import java.awt.*;
 import java.util.Collection;
 import java.util.HashSet;
 
+/**
+ * Builder class which is responsible for constructing objects needed by a {@link Tracer}.
+ */
 public class SceneBuilder {
 
     SceneBuilder() {}
@@ -29,14 +32,29 @@ public class SceneBuilder {
     private Vector mAmbient = new Vector(0, 0, 0);
     private String mOutput = "test.ppm";
 
+    /**
+     * Builds a {@link Scene}.
+     *
+     * @return a constructed {@link Scene}.
+     */
     public Scene buildScene() {
-        return new Scene(mObjects, mLights, mBackground, mAmbient);
+        return new Scene(mObjects, mLights, new ViewPort(mNear, mTop, mBottom, mLeft, mRight), mBackground, mAmbient);
     }
 
-    public RayTracer buildRayTracer() {
-        return new RayTracer(mResolution, new ViewPort(mNear, mTop, mBottom, mLeft, mRight));
+    /**
+     * Builds a {@link Tracer}.
+     *
+     * @return a constructed {@link Tracer}.
+     */
+    public Tracer buildRayTracer() {
+        return new Tracer(mResolution, new ViewPort(mNear, mTop, mBottom, mLeft, mRight));
     }
 
+    /**
+     * build a {@link OutputFile}.
+     *
+     * @return a constructed {@link OutputFile}.
+     */
     public OutputFile buildOutputFile() {
         return new OutputFile(mOutput);
     }

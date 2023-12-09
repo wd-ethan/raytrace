@@ -13,13 +13,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import static com.tracer.RayTracer.ORIGIN;
 
-public class RayTracer {
+/**
+ * Represents a raytracer which can trace a scene and produce an image.
+ */
+public class Tracer {
 
-    public static final Matrix ORIGIN = new Matrix(new double[][] {{0}, {0}, {0}, {1}});
+    public static final int TIMEOUT = 120;
 
-    public RayTracer(final Resolution resolution, final ViewPort view) {
+
+    public Tracer(final Resolution resolution, final ViewPort view) {
         mResolution = resolution;
         mView = view;
     }
@@ -27,6 +30,12 @@ public class RayTracer {
     private final Resolution mResolution;
     private final ViewPort mView;
 
+    /**
+     * Traces rays from an eye through a scene to produce an image.
+     *
+     * @param scene The {@link Scene} to trace.
+     * @return an {@link Image} of the traced {@link Scene}.
+     */
     public Image trace(final Scene scene) {
         final Image image = new Image(mResolution);
         final ExecutorService executor = Executors.newFixedThreadPool(16);
@@ -39,7 +48,7 @@ public class RayTracer {
         executor.shutdown();
 
         try {
-            executor.awaitTermination(20, TimeUnit.SECONDS);
+            executor.awaitTermination(TIMEOUT, TimeUnit.SECONDS);
 
         } catch (InterruptedException e) {
             throw new RuntimeException("Scene generation exceeded timeout.", e);
@@ -54,7 +63,7 @@ public class RayTracer {
         final SceneBuilder builder = sceneFile.decode();
 
         final Scene scene = builder.buildScene();
-        final RayTracer tracer = builder.buildRayTracer();
+        final Tracer tracer = builder.buildRayTracer();
         final OutputFile output = builder.buildOutputFile();
 
         final Image image = tracer.trace(scene);
@@ -62,7 +71,12 @@ public class RayTracer {
     }
 }
 
+/**
+ * Represents the task of calculating an individual pixel, for concurrency.
+ */
 class TraceTask implements Runnable {
+
+    public static final Matrix ORIGIN = new Matrix(new double[][] {{0}, {0}, {0}, {1}});
 
     TraceTask(final Scene scene, final Pixel pixel, final ViewPort view, final Image image) {
         mScene = scene;

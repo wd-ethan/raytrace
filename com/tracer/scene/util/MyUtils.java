@@ -2,6 +2,9 @@ package com.tracer.scene.util;
 
 import Jama.Matrix;
 
+/**
+ * Contains static functions found missing in any libraries used.
+ */
 public class MyUtils {
 
     public static double dot(final Matrix matrix1, final Matrix matrix2) {
