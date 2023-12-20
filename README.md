@@ -1,4 +1,4 @@
-# CSC 305 Assignment #3 - Java Raytracer
+# Java Raytracer
 
 This repo contains a full raytracer implementation which supports sphere objects
 and a depth of three reflections. It does not currently support refracted light rays.
@@ -33,14 +33,34 @@ followed by,
 
      java -cp .:lib/Jama-1.0.2.jar RayTracer <input.txt>
 
-In both cases, `<input.txt>` is a valid file path which contains input as per the
-assignment description. 
+In both cases, `<input.txt>` is a valid `txt` file path which contains input
+following the format:
 
-Ex) `./assets/testCases/testSample.txt`
+```
+NEAR <z pos>
 
+LEFT <x pos>
+
+RIGHT <x pos>
+
+BOTTOM <y pos>
+
+TOP <y pos>
+
+RES <width> <height>
+
+SPHERE <name> <x pos> <y pos> <z pos> <x scl> <y scl> <z scl> <r> <g> <b> <ka> <kd> <ks> <kr> <n>
+
+LIGHT <name> <x pos> <y pos> <z pos> <r> <g> <b>
+
+BACK <r> <g> <b>
+
+AMBIENT <r> <g> <b>
+
+OUTPUT <name>
+
+```
 ## Project Structure
-
-Note: there are pre-compiled `ppm` images in `./assets/preProcessed/`.
 
 Below is a project overview which outlines some important files:
 
